@@ -4,19 +4,18 @@ import { SurveysUsersRepository } from "../repositories/SurveysUsersRepository";
 
 
 
-class AnswerController{
+class AnswerController {
 
-    async execute(request: Request, response: Response){
+    async execute(request: Request, response: Response) {
         const { value } = request.params;
         const { u } = request.query;
 
         const surveysUsersRepository = getCustomRepository(SurveysUsersRepository);
-        
+
         const surveyUser = await surveysUsersRepository.findOne({
             id: String(u)
         });
 
-        console.log(surveyUser);
         if (!surveyUser) {
             return response.status(400).json({
                 error: "Survey User does not exist!"
@@ -26,7 +25,7 @@ class AnswerController{
         surveyUser.value = Number(value);
 
         await surveysUsersRepository.save(surveyUser);
-        
+
         return response.json(surveyUser);
     }
 }
